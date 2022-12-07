@@ -4,17 +4,17 @@ out.textContent = changeAuto[changeAuto.selectedIndex].textContent;
 
 const getData = async (val) => {
 
-    let response = await fetch('cars.json');
+    try {
+        let response = await fetch('cars.json');
     let cars = await response.json();
-    val = val.toLowerCase();
 
-    cars['cars'].forEach(elem => {
-        if (elem.brand === val) {
-            out.innerHTML = `<p>Тачка: ${elem.brand} ${elem.model}</p>
-                <p>Цена: ${elem.price}</p>
+    out.innerHTML = `<p>Тачка: ${cars.cars[val - 1].brand} ${cars.cars[val - 1].model}</p>
+                <p>Цена: ${cars.cars[val - 1].price} $</p>
                 `;
-        }
-    });
+    } catch (error) {
+        throw new Error(error);
+    }
+    
 
 };
 
@@ -23,7 +23,7 @@ changeAuto.addEventListener('change', ({ target }) => {
     if (target.selectedIndex === 0) {
         out.textContent = target[target.selectedIndex].textContent;
     } else {
-        getData(target[target.selectedIndex].value);
+        getData(target.selectedIndex);
     }
 
 });
